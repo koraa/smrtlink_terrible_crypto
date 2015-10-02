@@ -1,13 +1,13 @@
 # WTF – Smartlink Terrible Crypto
 
-This is an implementation of the proprietary crypto
-algorithm TP-Link Easy Smart Switches use to encrypt their
-configuration traffic with.
+This is an implementation of the crypto algorithm TP-Link
+Easy Smart Switches use to encrypt their configuration
+traffic with.
 
-It also includes the key the use for this because they use
-one key globally and they're frankly big dumb arses.
+It also includes the key they use for this because they use
+one key globally. Idiots!
 
-Thanks to @jdi-li who reverse-engineered the algorythim and
+Thanks to @jdi-li who reverse-engineered the algorithm and
 they key (by decompiling some badly-obfuscated Java code).
 He's implementing an open source tool to communicate with
 the switches: https://github.com/jdi-li/smrtlink
@@ -26,7 +26,8 @@ algorithm didn't do so either.
 ## Decrypt
 
 Same as encrypting but with the cyphertext as input, since
-`A = xor(xor(A, B), B)`.
+`A = xor(xor(A, B), B)`.  (XORing with some data A and
+XORing again produces the input).
 
 ## PRNG
 
@@ -49,20 +50,20 @@ Each switch stores *THE SAME* static key. In the Java source
 this key was found. It was a bit scrambled but the
 scrambling algorithm is also stored in the Java source.
 This repo stores the resulting key in tplink_kompromat_key.
-This renders the entire thing Broken regardless of how safe
-the entire algorithm is.
+For this reason their entire crypto is broken regardless of
+how safe the algorithm is.
 
 The keystream can be recovered when the plaintext is known
 (simply by XORing).
 
-Any other plaintext can then be recovered simply using the
+Any other plaintext can then be recovered, simply by using the
 keystream of a sufficient length.
 
-The keystream's symbol frequency is very similar to the
-key's additionally the keystream can only contains symbols
+I think the keystream's symbol frequency is very similar to the
+key's. Additionally the keystream can only contains symbols
 the key also contains.
 This makes it a lot easier to recover the key using
-"enhanced" brute force.
+*enhanced* brute force.
 
 It should also be possible to recover the key from
 a sufficiently long keystream by trying different bytes that
