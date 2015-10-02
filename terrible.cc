@@ -38,8 +38,12 @@ vector<byte> generate_keystream(bytes key /* copy */, size_t len) {
   for (size_t ix = 0; ix < len; ix++) {
 
     // variable meanings unknown
+
+    // Values: 1, 2, 3, ..., 255, 1, ...Q
     byte h = (ix + 1) % 256;
-    q = (q + key[h]) % 256; // q accumulates
+    // Values: key[1], key[1] + key[2], ...
+    // as subject to the swapping below
+    q = (q + key[h]) % 256;
 
     swap(key[h], key[q]);
 
